@@ -5,9 +5,9 @@ public class VilleConcrete implements Ville {
     private int population;
 
     public VilleConcrete(String nom, int population){
-        //Constructor
-        //return a town called "nom" and
-        //whose number of inhabitants is "population"
+        /*Constructor
+        return a town called "nom" and
+        whose number of inhabitants is "population"*/
         this.nom = nom;
         this.population = population;
     }
