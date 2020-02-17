@@ -7,12 +7,12 @@ import java.util.List;
 public class ReseauConcrete implements Reseau {
 
 	private List<Route> routes;
-	
+
 	public ReseauConcrete() {
 		/*Constructor*/
-		routes = new ArrayList<Route>();
+		routes = new ArrayList<>();
 	}
-	
+
 
 	@Override
 	public Iterator<Route> iterator() {
@@ -31,7 +31,7 @@ public class ReseauConcrete implements Reseau {
 
 	@Override
 	public List<Route> routes(Ville v) {
-		List<Route> tmp = new ArrayList<Route>();
+		List<Route> tmp = new ArrayList<>();
 		for(Route route:this.routes()) {
 			if(route.appartient(v)) {
 				tmp.add(route);
@@ -56,7 +56,7 @@ public class ReseauConcrete implements Reseau {
 	}
 
 	@Override
-	public boolean bonneRoute(Route r) { 
+	public boolean bonneRoute(Route r) {
 		for(Route route:this.routes()) {
 			if(route.ontMemesVilles(r)) {
 				return route.meilleur(r);
@@ -64,11 +64,11 @@ public class ReseauConcrete implements Reseau {
 		}
 		return true;
 	}
-	
+
 
 	@Override
 	public Reseau unionReseaux(Reseau res) {
-		Reseau union = new ReseauConcrete();
+		Reseau union = new reseau.ReseauConcrete();
 		//add all route_this
 		union.routes().addAll(this.routes());
 		for(Route route_res:res.routes()) {
@@ -88,19 +88,19 @@ public class ReseauConcrete implements Reseau {
 
 	@Override
 	public Reseau produitRoutes(Reseau res) {
-		Reseau produit = new ReseauConcrete();
+		Reseau produit = new reseau.ReseauConcrete();
 		//compare roads this and res two by two
 		for(Route route_this:this.routes()) {
-				for(Route route_res:res.routes()) {
-					if(route_this.seSuivent(route_res) ) {
-						Route new_route = new RouteConcrete(route_this, route_res);
-						if(!produit.estDans(new_route) && produit.bonneRoute(new_route)) {
-							//replace the road that is already in produit with the best road
-							produit.routes().removeIf(route_produit -> route_produit.ontMemesVilles(new_route));
-							produit.ajouterRoute(new_route);
-						}
+			for(Route route_res:res.routes()) {
+				if(route_this.seSuivent(route_res) ) {
+					Route new_route = new RouteConcrete(route_this, route_res);
+					if(!produit.estDans(new_route) && produit.bonneRoute(new_route)) {
+						//replace the road that is already in produit with the best road
+						produit.routes().removeIf(route_produit -> route_produit.ontMemesVilles(new_route));
+						produit.ajouterRoute(new_route);
 					}
 				}
+			}
 		}
 		return produit;
 	}
@@ -111,13 +111,11 @@ public class ReseauConcrete implements Reseau {
 		Reseau union = this.unionReseaux(produit2);
 		Reseau produit3 = this.produitRoutes(produit2);
 		return union.unionReseaux(produit3);
-
-
 	}
 
 	@Override
 	public Reseau chemins() {
-		Reseau chemins = new ReseauConcrete();
+		Reseau chemins = new reseau.ReseauConcrete();
 		chemins.routes().addAll(this.routes());
 		for(int i=0; i<this.taille(); i++) {
 			Reseau produit = this.produitRoutes(chemins);
@@ -127,16 +125,16 @@ public class ReseauConcrete implements Reseau {
 	}
 
 	@Override
-    public String toString() {
-		String str = "";
+	public String toString() {
+		StringBuilder str = new StringBuilder();
 		for(Route route:this.routes()) {
-			str+=route.toString()+".";
+			str.append(route.toString()).append(".");
 		}
-		return str;
-    }
-	
+		return str.toString();
+	}
+
 	public static void main(String[] args) {
-		
+
 		// Ville
 
 		Ville arras = new VilleConcrete("Arrras", 40000);
@@ -173,7 +171,7 @@ public class ReseauConcrete implements Reseau {
 
 		// Reseau
 
-		Reseau res = new ReseauConcrete();
+		Reseau res = new reseau.ReseauConcrete();
 
 		res.ajouterRoute(arras_nantes);
 		res.ajouterRoute(arras_paris);
@@ -195,12 +193,12 @@ public class ReseauConcrete implements Reseau {
 
 
 		// Chemins
-		
+
 		Reseau chemins = res.chemins();
 
 
-		System.out.println(chemins.taille());
-		System.out.println(chemins);
-    }
+		System.out.println("Le nombre de routes dans chemins est:"+ chemins.taille());
+		System.out.println("Chemins:"+ chemins);
+	}
 
 }
